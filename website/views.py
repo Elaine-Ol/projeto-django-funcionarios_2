@@ -5,19 +5,30 @@ from funcionario.models import Funcionarios
 from .forms import FuncionarioForm
 
 def index(request):
-    """Página inicial com dashboard"""
+    """Página inicial com dashboard e dados reais"""
+    # Buscar todos os funcionários do banco de dados
     funcionarios = Funcionarios.objects.all()
-   
+    
+    # Calcular estatísticas REAIS
     total_funcionarios = funcionarios.count()
+    
+    # Calcular média de tempo de serviço (evitar divisão por zero)
     tempo_medio = funcionarios.aggregate(Avg('tempo_de_servico'))['tempo_de_servico__avg'] or 0
+    
+    # Calcular média salarial
     salario_medio = funcionarios.aggregate(Avg('remuneracao'))['remuneracao__avg'] or 0
+    
+    # Para "Ativos", vamos considerar todos os funcionários cadastrados
+    ativos = total_funcionarios
     
     context = {
         'funcionarios': funcionarios,
         'total_funcionarios': total_funcionarios,
         'tempo_medio': round(tempo_medio, 1),
         'salario_medio': round(salario_medio, 2),
+        'ativos': ativos,
     }
+    
     return render(request, 'website/index.html', context)
 
 def cadastrar_funcionario(request):

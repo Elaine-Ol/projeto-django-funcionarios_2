@@ -18,7 +18,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="card-title">Total</h4>
-                        <h2>15</h2>
+                        <h2>{{ total_funcionarios }}</h2>
                         <p class="card-text">Funcionários</p>
                     </div>
                     <div class="align-self-center">
@@ -35,7 +35,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="card-title">Média</h4>
-                        <h2>3.2</h2>
+                        <h2>{{ tempo_medio }}</h2>
                         <p class="card-text">Anos de Serviço</p>
                     </div>
                     <div class="align-self-center">
@@ -52,7 +52,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="card-title">Salário</h4>
-                        <h2>R$ 2.850</h2>
+                        <h2>R$ {{ salario_medio }}</h2>
                         <p class="card-text">Média Salarial</p>
                     </div>
                     <div class="align-self-center">
@@ -69,7 +69,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="card-title">Ativos</h4>
-                        <h2>12</h2>
+                        <h2>{{ ativos }}</h2>
                         <p class="card-text">No momento</p>
                     </div>
                     <div class="align-self-center">
@@ -85,9 +85,14 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-light">
-                <h5 class="card-title mb-0">
-                    <i class="bi bi-table"></i> Lista de Funcionários
-                </h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-table"></i> Lista de Funcionários
+                    </h5>
+                    <a href="{% url 'cadastrar_funcionario' %}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-person-plus"></i> Novo Funcionário
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -103,67 +108,44 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for funcionario in funcionarios %}
                             <tr>
-                                <td>1</td>
-                                <td>Elaine Oliveira</td>
-                                <td>123.456.789-10</td>
-                                <td>2 anos</td>
-                                <td>R$ 2.500,00</td>
+                                <td>{{ funcionario.id }}</td>
+                                <td>{{ funcionario.nome }} {{ funcionario.sobrenome }}</td>
+                                <td>{{ funcionario.cpf }}</td>
+                                <td>{{ funcionario.tempo_de_servico }} ano{{ funcionario.tempo_de_servico|pluralize }}</td>
+                                <td>R$ {{ funcionario.remuneracao }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary">
+                                    <a href="{% url 'detalhes_funcionario' funcionario.id %}" class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-warning">
+                                    </a>
+                                    <a href="{% url 'editar_funcionario' funcionario.id %}" class="btn btn-sm btn-outline-warning">
                                         <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger">
+                                    </a>
+                                    <a href="{% url 'excluir_funcionario' funcionario.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza que deseja excluir este funcionário?')">
                                         <i class="bi bi-trash"></i>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
+                            {% empty %}
                             <tr>
-                                <td>2</td>
-                                <td>Maria Santos</td>
-                                <td>987.654.321-00</td>
-                                <td>5 anos</td>
-                                <td>R$ 3.200,00</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-warning">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+                                <td colspan="6" class="text-center py-4">
+                                    <i class="bi bi-people display-4 text-muted"></i>
+                                    <p class="mt-2 text-muted">Nenhum funcionário cadastrado.</p>
+                                    <a href="{% url 'cadastrar_funcionario' %}" class="btn btn-primary">
+                                        <i class="bi bi-person-plus"></i> Cadastrar Primeiro Funcionário
+                                    </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Pedro Oliveira</td>
-                                <td>456.789.123-00</td>
-                                <td>1 ano</td>
-                                <td>R$ 1.800,00</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-warning">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
                 
+                {% if funcionarios %}
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <div>
-                        <span class="text-muted">Mostrando 3 de 15 registros</span>
+                        <span class="text-muted">Mostrando {{ funcionarios.count }} de {{ total_funcionarios }} registro{{ total_funcionarios|pluralize }}</span>
                     </div>
                     <nav>
                         <ul class="pagination mb-0">
@@ -185,6 +167,7 @@
                         </ul>
                     </nav>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
