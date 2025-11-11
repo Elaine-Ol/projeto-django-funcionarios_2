@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes - {{ funcionario.nome }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4 class="card-title mb-0">
+                    <i class="bi bi-person-badge"></i> Detalhes do Funcionário
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Nome:</strong> {{ funcionario.nome }}</p>
+                        <p><strong>Sobrenome:</strong> {{ funcionario.sobrenome }}</p>
+                        <p><strong>CPF:</strong> {{ funcionario.cpf }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Tempo de Serviço:</strong> {{ funcionario.tempo_de_servico }} anos</p>
+                        <p><strong>Remuneração:</strong> R$ {{ funcionario.remuneracao }}</p>
+                        <p><strong>ID:</strong> {{ funcionario.id }}</p>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                    <a href="{% url 'listar_funcionarios' %}" class="btn btn-secondary me-md-2">
+                        <i class="bi bi-arrow-left"></i> Voltar
+                    </a>
+                    <a href="{% url 'editar_funcionario' funcionario.id %}" class="btn btn-warning me-md-2">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <a href="{% url 'excluir_funcionario' funcionario.id %}" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Excluir
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

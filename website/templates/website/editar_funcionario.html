@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar - {{ funcionario.nome }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-warning text-white">
+                <h4 class="card-title mb-0">
+                    <i class="bi bi-pencil"></i> Editar Funcionário
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nome</label>
+                            {{ form.nome }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Sobrenome</label>
+                            {{ form.sobrenome }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">CPF</label>
+                        {{ form.cpf }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tempo de Serviço (anos)</label>
+                            {{ form.tempo_de_servico }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Remuneração (R$)</label>
+                            {{ form.remuneracao }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'listar_funcionarios' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-warning">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
